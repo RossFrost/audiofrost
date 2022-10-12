@@ -1,9 +1,36 @@
-EXE_NAME := "output.exe"
-INCLUDE = "include"
-LIB_DIRECTORY = "."
+INCLUDE_DIRECOTRY = include
 
-all: compile
-compile:
-	echo "Compiling"
-	gcc main.c  -I $(INCLUDE) -L $(LIB_DIRECTORY) -l "cdio" -l "libFLAC" -o $(EXE_NAME) -W 
+REQUEST_NAME = request
+REQUEST_DLL = $(REQUEST_NAME).dll
+REQUEST_DIR = source/request
+
+CD_RIP_NAME = cdrip
+CD_RIP_DLL = $(CD_RIP_NAME).dll
+CD_RIP_DIR = source/rip
+
+OUTPUT_DIRECTORY = output
+ASSESTS_DIRECTORY = assests
+
+MAIN = main.c
+EXE_NAME = audiofrost.exe
+OUT = compiled/
+
+
+all: clean libs directories executable
+
+clean:
+	rmdir /s /q "$(OUT)"
+	mkdir "$(OUT)"
+	copy "cdio.dll" "$(OUT)"
+
+libs: 
+	gcc -fpic -shared "$(REQUEST_DIR)/base64.c" -I "$(INCLUDE_DIRECOTRY)" -o "$(OUT)$(REQUEST_DLL)"
+	gcc -fpic -shared "$(CD_RIP_DIR)/cdrip.c" "$(CD_RIP_DIR)/wav.c" -L "$(OUT)" -l "cdio" -I "$(INCLUDE_DIRECOTRY)" -o "$(OUT)$(CD_RIP_DLL)"
+
+directories:
+	mkdir "$(OUT)$(OUTPUT_DIRECTORY)"
+	mkdir "$(OUT)$(ASSESTS_DIRECTORY)"
+
+executable:
+	gcc "$(MAIN)" -I "$(INCLUDE_DIRECOTRY)" -L "$(OUT)" -l "$(REQUEST_NAME)" -l "$(CD_RIP_NAME)" -o "$(OUT)$(EXE_NAME)" 
 
