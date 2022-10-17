@@ -1,13 +1,16 @@
-inline long long get_length_of_int(long long value) {
-    long long base = 1;
-    int iteration = 1;
+#include <string.h>
+#include <dirent.h>
+#include <limits.h>
+#include <stdlib.h>
 
-    while (value < base) {
-        ++iteration;
-        base *= 10;
-    }
+#define COMPILED_PATH "\\compiled"
 
-    return iteration;
-}
+#ifndef UTIL_H_INCLUDED
+#define UTIL_H_INCLUDED
+    #define OUTPUT_DIRECTORY_PATH "\\output"
+    #define TEMP_FILE_LENGTH 20
 
+    void full_path(char *file, char destination[]);
+    long long get_length_of_int(long long value);
 
+#endif
