@@ -1,30 +1,31 @@
 #include <cdrip.h>
+#include <util.h>
+#include <string.h>
+#include <stdio.h>
 #include <request.h>
+#include <stdlib.h>
+#include <assert.h>
 
-char *get_metabrainz_discid(tracklist tracks) {
-    SHA_INFO sha;
-    SHA_BYTE *buffer;
-    SHA_LONG size;
+#include <discid/discid.h>
 
-    sprintf(buffer, "%02X", tracks.tracks_offset);
-    sha_update(&sha, buffer, strlen(buffer));
-    sprintf(&buffer, "%02X", tracks.tracks);
-    sha_update(&sha, buffer, strlen(buffer));
+#define XA_INTERVAL		((60 + 90 + 2) * 75)
+#define DATA_TRACK		0x04
 
-    for (unsigned char i_track = 0; i_track != MAX_TRACKS + 1; ++i_track) {
-        sprintf(buffer, "%08X", tracks.track_LBAs[i_track]);
-        sha_update(&sha, buffer, strlen(buffer));
-    }
 
-    unsigned char digest[20];
-    sha_final(digest, &sha);
-
-    rfc822_binary(digest, sizeof(digest), &size);
-
-    return digest;
+void get_metabrainz_discid(char *device_number, tracklist tracks, char output[]) {
+    puts("works");
+	DiscId *disc_id = discid_new();
+    discid_read(disc_id, device_number);
+    char *id = discid_get_id(disc_id);
+    memcpy(output, id, strlen(output));
+    free(disc_id);
 }
 
-char *get_metabrainz_xml_request(tracklist tracks) {
-    char *disc_id = get_metabrainz_discid(tracks);
+char *get_metabrainz_xml_request(cdio_t_array devices, tracklist *tracks) {
+    char *musicbrainz_url_query_base = "https://musicbrainz.org/ws/2/discid/";
+    char disc_id[30];
+    get_metabrainz_discid(devices.device_names[0], tracks[0], disc_id);
     printf("%s", disc_id);
+    strcat(musicbrainz_url_query_base, disc_id);
+    return musicbrainz_url_query_base;
 }

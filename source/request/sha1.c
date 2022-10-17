@@ -1,8 +1,16 @@
 /* (PD) 2001 The Bitzi Corporation
  * Please see file COPYING or http://bitzi.com/publicdomain 
  * for more info.
- * 
- * Further Edited by RossFrost
+ *
+ * NIST Secure Hash Algorithm 
+ * heavily modified by Uwe Hollerbach <uh@alumni.caltech edu> 
+ * from Peter C. Gutmann's implementation as found in 
+ * Applied Cryptography by Bruce Schneier 
+ * Further modifications to include the "UNRAVEL" stuff, below 
+ *
+ * This code is in the public domain 
+ *
+ * $Id$
  */
 
 #include <string.h>

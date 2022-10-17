@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 void write_raw_sectors_to_wav(char *file_name, CdIo_t *device, lsn_t first_sector, lsn_t last_sector) {
     FILE *file = fopen(file_name, "ab");
     for (lsn_t current_sector = first_sector; current_sector < last_sector + 1; ++current_sector) {

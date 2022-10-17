@@ -24,8 +24,8 @@ clean:
 	copy "cdio.dll" "$(OUT)"
 
 libs: 
-	gcc -fpic -shared "$(REQUEST_DIR)/base64.c" -I "$(INCLUDE_DIRECOTRY)" -o "$(OUT)$(REQUEST_DLL)"
-	gcc -fpic -shared "$(CD_RIP_DIR)/cdrip.c" "$(CD_RIP_DIR)/wav.c" -L "$(OUT)" -l "cdio" -I "$(INCLUDE_DIRECOTRY)" -o "$(OUT)$(CD_RIP_DLL)"
+	gcc -fpic -shared "$(REQUEST_DIR)/base64.c" "$(REQUEST_DIR)/sha1.c" "$(REQUEST_DIR)/request.c" "$(REQUEST_DIR)/disc_win32.c" "$(REQUEST_DIR)/disc.c" "$(REQUEST_DIR)/toc.c" -I "$(INCLUDE_DIRECOTRY)" -o "$(OUT)$(REQUEST_DLL)"
+	gcc -fpic -shared "$(CD_RIP_DIR)/cdrip.c" "$(CD_RIP_DIR)/wav.c" -L "$(OUT)" -l "cdio" -I "$(INCLUDE_DIRECOTRY)" -L "$(OUT)" -l "$(REQUEST_NAME)" -o "$(OUT)$(CD_RIP_DLL)"
 
 directories:
 	mkdir "$(OUT)$(OUTPUT_DIRECTORY)"

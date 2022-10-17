@@ -6,6 +6,5 @@
 
 
 int main(int argc, char *argv[]) {
-    output_directory *directory = cd_rip_init(WAV);
-
+    tracklist *tracks = cd_rip_init(WAV, true);
 }

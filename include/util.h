@@ -1,4 +1,4 @@
-long long get_length_of_int(long long value) {
+inline long long get_length_of_int(long long value) {
     long long base = 1;
     int iteration = 1;
 
@@ -9,3 +9,5 @@ long long get_length_of_int(long long value) {
 
     return iteration;
 }
+
+

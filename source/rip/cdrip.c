@@ -52,6 +52,7 @@ tracklist *get_tracks(cdio_t_array cdio_array) {
     for (unsigned char i_device = 0; i_device != cdio_array.num_devices; ++i_device) {
         tracks[i_device].tracks = cdio_get_last_track_num(cdio_array.devices[i_device]);
         tracks[i_device].tracks_offset = cdio_get_first_track_num(cdio_array.devices[i_device]);
+        tracks[i_device].device_number = cdio_array.device_names[i_device];
 
         tracks[i_device].first_sectors = malloc(sizeof(int) * (tracks[i_device].tracks - 1));
         tracks[i_device].last_sectors = malloc(sizeof(int) * (tracks[i_device].tracks - 1));
@@ -94,6 +95,7 @@ cdio_t_array get_devices() {
     for (char iteration = 0; device_names[iteration] != NULL; ++iteration) {
         char *device = device_names[iteration];
         cdio_array.devices[iteration] = cdio_open(device_names[iteration], driver_id);
+        cdio_array.device_names[iteration] = device_names[iteration];
 
         ++cdio_array.num_devices;
 
@@ -101,14 +103,21 @@ cdio_t_array get_devices() {
     return cdio_array;
 }
 
-void *cd_rip_init(enum AUDIO_OUTPUT_OPTIONS audio_option) {
+tracklist *cd_rip_init(enum AUDIO_OUTPUT_OPTIONS audio_option, int musicbrainz_enabled) {
     cdio_t_array devices = get_devices();
     tracklist *tracks = get_tracks(devices);
-    output_directory *output_dir = create_tree(tracks, devices.num_devices);
+    /**output_directory *output_dir = create_tree(tracks, devices.num_devices);
 
     switch (audio_option) {
         case WAV: write_to_wav(devices, tracks, output_dir);
     }
 
+
     free(output_dir);
+    **/
+
+    if (musicbrainz_enabled == true) {
+        get_metabrainz_xml_request(devices, tracks);
+    }   
+    return tracks;
 }
