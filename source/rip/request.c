@@ -34,7 +34,7 @@ char *get_metabrainz_xml_request(tracklist tracks, output_directory directory) {
     char connect_exe[_MAX_PATH];
     full_path("connect.exe", connect_exe);
 
-    sprintf(get, " \"https://musicbrainz.org/ws/2/discid/-?toc=%s&inc=artist-credits%c20aliases\" \"%s\\output.xml\"", disc_id, 37, directory.directory);
+    sprintf(get, " \"https://musicbrainz.org/ws/2/discid/-?toc=%s&inc=artist-credits%c20aliases\" \"%s\\output\"", disc_id, 37, directory.directory);
     strcat(connect_exe, get);
     system(connect_exe);
 
